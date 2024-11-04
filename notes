@@ -1,0 +1,517 @@
+Aqui estão cinco questões de múltipla escolha envolvendo códigos SQL e **erros** comuns, que testam a capacidade de identificar e corrigir esses erros.
+
+---
+
+### **Questão 1: Sintaxe de INSERT**
+
+**Enunciado:**  
+Analise o seguinte código de inserção e identifique o erro:
+
+```sql
+INSERT INTO clientes nome, email 
+VALUES ('Carlos Silva', 'carlos@gmail.com');
+```
+
+Qual é o erro no código acima?
+
+- A) Falta um ponto e vírgula no final da instrução.
+- B) Os parênteses ao redor dos nomes das colunas estão faltando.
+- C) O valor de `nome` está fora de ordem.
+- D) O tipo de dado `varchar` para o campo `email` não está especificado.
+
+**Resposta Correta:**  
+**B)** Os parênteses ao redor dos nomes das colunas estão faltando.
+
+---
+
+### **Questão 2: Consulta com JOIN**
+
+**Enunciado:**  
+O código abaixo faz uma junção entre duas tabelas `clientes` e `pedidos`:
+
+```sql
+SELECT c.nome, p.valor_total 
+FROM clientes c
+LEFT JOIN pedidos p
+ON c.id_cliente = pedidos.id_cliente;
+```
+
+Qual é o erro no código?
+
+- A) O alias da tabela `pedidos` foi definido, mas não foi usado na cláusula `ON`.
+- B) O alias da tabela `clientes` está incorreto.
+- C) A tabela `pedidos` não pode ser usada em um `LEFT JOIN`.
+- D) O `LEFT JOIN` deve ser substituído por um `INNER JOIN`.
+
+**Resposta Correta:**  
+**A)** O alias da tabela `pedidos` foi definido, mas não foi usado na cláusula `ON`.
+
+---
+
+### **Questão 3: Atualização de Dados**
+
+**Enunciado:**  
+O seguinte código tenta atualizar o telefone de um cliente específico na tabela `clientes`:
+
+```sql
+UPDATE clientes 
+SET telefone = '12345-6789' 
+WHERE id_cliente == 10;
+```
+
+Qual é o erro no código?
+
+- A) O campo `telefone` precisa ser do tipo `INT`.
+- B) O operador de comparação `==` está incorreto.
+- C) O valor de `id_cliente` deve ser uma string, não um número.
+- D) O nome da tabela `clientes` está incorreto.
+
+**Resposta Correta:**  
+**B)** O operador de comparação `==` está incorreto. O correto é `=`.
+
+---
+
+### **Questão 4: DELETE com Falta de Condição**
+
+**Enunciado:**  
+O código a seguir tenta remover todos os registros de clientes sem pedidos:
+
+```sql
+DELETE FROM clientes;
+```
+
+O que está faltando ou errado no código?
+
+- A) O código removerá todos os registros de `clientes` sem qualquer critério.
+- B) A cláusula `WHERE` está faltando para especificar a condição.
+- C) Deve haver uma junção com a tabela `pedidos` para garantir que os clientes sem pedidos sejam removidos.
+- D) Todas as opções acima.
+
+**Resposta Correta:**  
+**D)** Todas as opções acima.
+
+---
+
+### **Questão 5: Função Agregada com GROUP BY**
+
+**Enunciado:**  
+O código abaixo tenta calcular o total de pedidos por cliente:
+
+```sql
+SELECT nome, COUNT(*), SUM(valor_total) 
+FROM clientes c
+JOIN pedidos p ON c.id_cliente = p.id_cliente;
+```
+
+Qual é o erro no código?
+
+- A) Falta uma cláusula `GROUP BY` para agrupar os resultados por cliente.
+- B) A função `COUNT(*)` não pode ser usada com `SUM`.
+- C) O alias `p` não está sendo utilizado corretamente na junção.
+- D) O nome da tabela `pedidos` está incorreto.
+
+**Resposta Correta:**  
+**A)** Falta uma cláusula `GROUP BY` para agrupar os resultados por cliente.
+
+---
+
+### Explicações:
+
+1. **Questão 1:** Os nomes das colunas precisam estar entre parênteses no comando `INSERT INTO`.
+2. **Questão 2:** A cláusula `ON` usa o nome completo da tabela, mas deveria usar o alias definido para `pedidos`.
+3. **Questão 3:** O operador correto para comparação no SQL é `=` e não `==`.
+4. **Questão 4:** A ausência de uma cláusula `WHERE` e a falta de junção com `pedidos` podem causar a exclusão de todos os registros de `clientes`.
+5. **Questão 5:** Ao usar funções agregadas como `COUNT` e `SUM`, é necessário agrupar os resultados por uma chave, neste caso, o nome do cliente, com a cláusula `GROUP BY`.
+
+Essas questões ajudam a identificar erros comuns em consultas SQL e a entender como corrigi-los.
+
+Aqui estão mais sete questões relacionadas especificamente a **junções de tabelas (JOINs)**, abordando tipos diferentes de junções, como **INNER JOIN**, **LEFT JOIN**, **RIGHT JOIN** e **FULL JOIN**, além de exemplos mais avançados envolvendo múltiplas junções e agregações.
+
+---
+
+### **Questão 1: INNER JOIN Simples**
+
+**Enunciado:**  
+Suponha que você tem duas tabelas:
+- `clientes(id_cliente, nome)`;
+- `pedidos(id_pedido, id_cliente, valor_total)`.
+
+Faça uma consulta que retorne o nome do cliente e o valor total de seus pedidos. 
+
+**Resposta:**
+
+```sql
+SELECT c.nome, p.valor_total 
+FROM clientes c 
+INNER JOIN pedidos p ON c.id_cliente = p.id_cliente;
+```
+
+---
+
+### **Questão 2: LEFT JOIN**
+
+**Enunciado:**  
+Use a mesma estrutura das tabelas da questão anterior. Faça uma consulta que retorne todos os clientes, incluindo aqueles que **não têm pedidos**. A consulta deve exibir o nome do cliente e o valor total de seus pedidos, caso exista.
+
+**Resposta:**
+
+```sql
+SELECT c.nome, p.valor_total 
+FROM clientes c 
+LEFT JOIN pedidos p ON c.id_cliente = p.id_cliente;
+```
+
+---
+
+### **Questão 3: RIGHT JOIN**
+
+**Enunciado:**  
+Suponha que você tem as tabelas `clientes(id_cliente, nome)` e `pedidos(id_pedido, id_cliente, valor_total)`. Faça uma consulta que exiba todos os pedidos, incluindo aqueles cujo cliente não está registrado na tabela `clientes`.
+
+**Resposta:**
+
+```sql
+SELECT c.nome, p.valor_total 
+FROM pedidos p 
+RIGHT JOIN clientes c ON c.id_cliente = p.id_cliente;
+```
+
+---
+
+### **Questão 4: FULL OUTER JOIN**
+
+**Enunciado:**  
+Suponha que as tabelas `clientes` e `pedidos` possam ter registros que não se correspondem diretamente (ou seja, pode haver clientes sem pedidos e pedidos sem clientes). Faça uma consulta que retorne todos os clientes e pedidos, combinando todos os registros, mesmo que alguns clientes ou pedidos não estejam relacionados.
+
+**Resposta:**
+
+```sql
+SELECT c.nome, p.valor_total 
+FROM clientes c 
+FULL OUTER JOIN pedidos p ON c.id_cliente = p.id_cliente;
+```
+
+> **Nota:** Nem todos os SGBDs suportam `FULL OUTER JOIN`, mas ele é amplamente usado em bancos como PostgreSQL e SQL Server.
+
+---
+
+### **Questão 5: Junção de Múltiplas Tabelas**
+
+**Enunciado:**  
+Suponha que além das tabelas `clientes` e `pedidos`, você tenha uma tabela `produtos(id_produto, nome_produto, preco)` e uma tabela `itens_pedido(id_pedido, id_produto, quantidade)`. Faça uma consulta que exiba o nome do cliente, o nome do produto e a quantidade comprada por cada pedido.
+
+**Resposta:**
+
+```sql
+SELECT c.nome, pr.nome_produto, ip.quantidade 
+FROM clientes c 
+INNER JOIN pedidos p ON c.id_cliente = p.id_cliente
+INNER JOIN itens_pedido ip ON p.id_pedido = ip.id_pedido
+INNER JOIN produtos pr ON ip.id_produto = pr.id_produto;
+```
+
+---
+
+### **Questão 6: Agregação com JOIN**
+
+**Enunciado:**  
+Use as mesmas tabelas da questão anterior. Faça uma consulta que retorne o nome do cliente e o **valor total** gasto por ele (valor total dos pedidos, somando a quantidade dos itens multiplicada pelo preço do produto).
+
+**Resposta:**
+
+```sql
+SELECT c.nome, SUM(ip.quantidade * pr.preco) AS total_gasto 
+FROM clientes c 
+INNER JOIN pedidos p ON c.id_cliente = p.id_cliente
+INNER JOIN itens_pedido ip ON p.id_pedido = ip.id_pedido
+INNER JOIN produtos pr ON ip.id_produto = pr.id_produto
+GROUP BY c.nome;
+```
+
+---
+
+### **Questão 7: SELF JOIN**
+
+**Enunciado:**  
+Suponha que você tenha uma tabela `empregados(id_empregado, nome, id_supervisor)` onde `id_supervisor` faz referência ao `id_empregado` do supervisor de um determinado funcionário. Faça uma consulta que exiba o nome do empregado e o nome do supervisor.
+
+**Resposta:**
+
+```sql
+SELECT e1.nome AS empregado, e2.nome AS supervisor 
+FROM empregados e1 
+LEFT JOIN empregados e2 ON e1.id_supervisor = e2.id_empregado;
+```
+
+---
+
+### Explicações dos Tipos de JOIN:
+
+1. **INNER JOIN**: Retorna apenas os registros que possuem correspondências entre as tabelas.
+2. **LEFT JOIN**: Retorna todos os registros da tabela à esquerda, e os correspondentes da tabela à direita. Se não houver correspondência, os valores da tabela à direita serão `NULL`.
+3. **RIGHT JOIN**: Retorna todos os registros da tabela à direita, e os correspondentes da tabela à esquerda. Se não houver correspondência, os valores da tabela à esquerda serão `NULL`.
+4. **FULL OUTER JOIN**: Retorna todos os registros quando há correspondência em qualquer uma das tabelas (esquerda ou direita). Registros sem correspondência exibem `NULL` em colunas da outra tabela.
+5. **SELF JOIN**: Um JOIN de uma tabela com ela mesma, útil para relacionamentos hierárquicos, como empregados e supervisores.
+
+Essas questões cobrem diversos cenários de junção, de simples a avançadas, incluindo agregações e junções múltiplas, que são frequentemente utilizadas em consultas complexas de banco de dados.
+
+Aqui estão sete questões mais objetivas sobre **consultas SQL**, que envolvem a manipulação de dados com inserções, consultas, atualizações, remoções, além de junções (JOIN) e funções agregadas.
+
+---
+
+### **Questão 1: Consulta Simples com Filtro**
+
+**Enunciado:**  
+Faça uma consulta que retorne o nome e o email dos clientes que possuem "gmail.com" no email na tabela `clientes`.
+
+**Resposta:**
+
+```sql
+SELECT nome, email 
+FROM clientes 
+WHERE email LIKE '%gmail.com';
+```
+
+---
+
+### **Questão 2: Inserção de Dados**
+
+**Enunciado:**  
+Insira um novo cliente na tabela `clientes` com os seguintes dados:
+- Nome: Lucas Andrade;
+- Email: lucas@gmail.com;
+- Telefone: 98765-4321.
+
+**Resposta:**
+
+```sql
+INSERT INTO clientes (nome, email, telefone) 
+VALUES ('Lucas Andrade', 'lucas@gmail.com', '98765-4321');
+```
+
+---
+
+### **Questão 3: Atualização de Registros**
+
+**Enunciado:**  
+Atualize o telefone do cliente Pedro Costa para `99999-9999` na tabela `clientes`.
+
+**Resposta:**
+
+```sql
+UPDATE clientes 
+SET telefone = '99999-9999' 
+WHERE nome = 'Pedro Costa';
+```
+
+---
+
+### **Questão 4: Remoção de Registros**
+
+**Enunciado:**  
+Remova da tabela `clientes` todos os clientes cujo email contém "yahoo.com".
+
+**Resposta:**
+
+```sql
+DELETE FROM clientes 
+WHERE email LIKE '%yahoo.com';
+```
+
+---
+
+### **Questão 5: Consulta com Ordenação**
+
+**Enunciado:**  
+Liste todos os clientes ordenados pelo nome em ordem alfabética.
+
+**Resposta:**
+
+```sql
+SELECT * 
+FROM clientes 
+ORDER BY nome ASC;
+```
+
+---
+
+### **Questão 6: Funções Agregadas**
+
+**Enunciado:**  
+Quantos clientes estão cadastrados na tabela `clientes`?
+
+**Resposta:**
+
+```sql
+SELECT COUNT(*) AS total_clientes 
+FROM clientes;
+```
+
+---
+
+### **Questão 7: Junção entre Tabelas (JOIN)**
+
+**Enunciado:**  
+Suponha que você tem uma tabela chamada `pedidos` que contém as colunas `id_pedido`, `id_cliente` e `valor_total`. Faça uma consulta que retorne o nome do cliente e o valor total de cada pedido, relacionando as tabelas `clientes` e `pedidos`.
+
+**Resposta:**
+
+```sql
+SELECT c.nome, p.valor_total 
+FROM clientes c 
+JOIN pedidos p ON c.id_cliente = p.id_cliente;
+```
+
+---
+
+### Explicações dos Comandos:
+
+1. **`SELECT ... WHERE LIKE`**: Filtra registros de acordo com um padrão específico.
+2. **`INSERT INTO ... VALUES`**: Insere novos registros em uma tabela.
+3. **`UPDATE ... SET`**: Atualiza campos de registros já existentes.
+4. **`DELETE FROM ... WHERE`**: Remove registros que atendem a uma condição.
+5. **`ORDER BY`**: Ordena os resultados da consulta.
+6. **`COUNT()`**: Conta a quantidade de registros.
+7. **`JOIN`**: Junta dados de duas ou mais tabelas com base em uma condição.
+
+Essas questões envolvem consultas mais diretas e comuns no dia a dia com bancos de dados, desde inserções, atualizações, remoções e contagens, até o uso de junções e ordenações.
+
+Aqui estão sete questões sobre **banco de dados**, progressivas do nível básico ao avançado, envolvendo os principais comandos **DML (Data Manipulation Language)**, **DDL (Data Definition Language)**, **DQL (Data Query Language)** e **DCL (Data Control Language)**. Cada questão é seguida da solução esperada.
+
+---
+
+### **Questão 1: Criando uma Tabela (DDL)**
+
+**Enunciado:**  
+Crie uma tabela chamada `clientes` com as seguintes colunas:
+- `id_cliente`: inteiro, chave primária, auto-incremento;
+- `nome`: varchar(100), não nulo;
+- `email`: varchar(100), único.
+
+**Resposta:**
+
+```sql
+CREATE TABLE clientes (
+    id_cliente INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE
+);
+```
+
+---
+
+### **Questão 2: Inserindo Dados em uma Tabela (DML)**
+
+**Enunciado:**  
+Insira três registros na tabela `clientes` com os seguintes dados:
+- João Silva, email: joao@gmail.com;
+- Maria Oliveira, email: maria@hotmail.com;
+- Pedro Costa, email: pedro@yahoo.com.
+
+**Resposta:**
+
+```sql
+INSERT INTO clientes (nome, email) 
+VALUES 
+('João Silva', 'joao@gmail.com'),
+('Maria Oliveira', 'maria@hotmail.com'),
+('Pedro Costa', 'pedro@yahoo.com');
+```
+
+---
+
+### **Questão 3: Consultando Dados (DQL)**
+
+**Enunciado:**  
+Faça uma consulta que exiba todos os registros da tabela `clientes`, mostrando as colunas `id_cliente`, `nome` e `email`.
+
+**Resposta:**
+
+```sql
+SELECT id_cliente, nome, email 
+FROM clientes;
+```
+
+**Resultado:**
+
+| id_cliente | nome           | email            |
+|------------|----------------|------------------|
+| 1          | João Silva     | joao@gmail.com    |
+| 2          | Maria Oliveira | maria@hotmail.com |
+| 3          | Pedro Costa    | pedro@yahoo.com   |
+
+---
+
+### **Questão 4: Atualizando um Registro (DML)**
+
+**Enunciado:**  
+Atualize o email de Maria Oliveira para `maria@outlook.com` na tabela `clientes`.
+
+**Resposta:**
+
+```sql
+UPDATE clientes 
+SET email = 'maria@outlook.com' 
+WHERE nome = 'Maria Oliveira';
+```
+
+---
+
+### **Questão 5: Removendo uma Coluna (DDL)**
+
+**Enunciado:**  
+Remova a coluna `email` da tabela `clientes`.
+
+**Resposta:**
+
+```sql
+ALTER TABLE clientes 
+DROP COLUMN email;
+```
+
+---
+
+### **Questão 6: Adicionando uma Nova Coluna (DDL)**
+
+**Enunciado:**  
+Adicione uma nova coluna chamada `telefone`, do tipo varchar(15), à tabela `clientes`.
+
+**Resposta:**
+
+```sql
+ALTER TABLE clientes 
+ADD telefone VARCHAR(15);
+```
+
+---
+
+### **Questão 7: Gerenciando Transações (DCL)**
+
+**Enunciado:**  
+Realize uma inserção na tabela `clientes`, inserindo um novo cliente "Carlos Souza" com telefone `12345-6789`. No entanto, cancele a inserção usando transações (BEGIN, ROLLBACK, COMMIT).
+
+**Resposta:**
+
+```sql
+-- Inicia a transação
+BEGIN;
+
+-- Tenta inserir o cliente
+INSERT INTO clientes (nome, telefone) 
+VALUES ('Carlos Souza', '12345-6789');
+
+-- Cancela a transação
+ROLLBACK;
+```
+
+---
+
+### Explicação dos Comandos:
+
+1. **DDL (Data Definition Language)**: Comandos para definir a estrutura do banco de dados e das tabelas, como `CREATE`, `ALTER`, `DROP`.
+2. **DML (Data Manipulation Language)**: Comandos para manipular dados dentro de tabelas, como `INSERT`, `UPDATE`, `DELETE`.
+3. **DQL (Data Query Language)**: Comandos de consulta, como `SELECT`, usados para recuperar dados.
+4. **DCL (Data Control Language)**: Comandos para gerenciar transações e permissões, como `GRANT`, `REVOKE`, `COMMIT`, `ROLLBACK`.
+
+Essas questões cobrem desde a criação de uma tabela até o uso de transações, abordando inserção, consulta, alteração e remoção de dados e colunas.
+
